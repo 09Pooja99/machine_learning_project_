@@ -136,3 +136,17 @@ To stop the docker container
 ```
 docker stop <container_id>
 ```
+send changes to github
+
+```
+git add .
+git commit -m "sending docker files to github"
+git push origin main
+
+```
+FINAL DEPLOYMENT
+
+Creating a folder : .github
+creating a folder inside .github folder : workflows
+creating a file inside workflows : main.yaml
+
