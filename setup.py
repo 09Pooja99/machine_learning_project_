@@ -1,12 +1,11 @@
-from setuptools import setup
+from setuptools import setup,find_packages
 from typing import List
 
 #Declarig variables for setup functions
 PROJECT_NAME="housing-predictor"
-VERSION="0.0.1"
+VERSION="0.0.2"
 AUTHOR="Pooja Pandey"
 DESCRIPTION="This is a first FSDS Machine Leaning Project"
-PACKAGES=["housing"]
 REQUIREMENT_FILE_NAME="requirements.txt"
 
 
@@ -21,7 +20,8 @@ def get_requirements_list()->List[str]:
     mentioned in the requirements.txt file
     """
     with open(REQUIREMENT_FILE_NAME) as requirement_file:
-        return requirement_file.readlines()
+        requirements = [req.strip() for req in requirement_file.readlines() if req.strip() and req.strip() != "-e ."]
+        return requirements
 
 
 
@@ -31,6 +31,12 @@ name=PROJECT_NAME,
 version=VERSION,
 author=AUTHOR,
 description=DESCRIPTION,
-packages=PACKAGES,
+packages=find_packages(), #["housing"]
 install_requires=get_requirements_list()
 )
+
+
+
+
+if __name__=="__main__":
+    print(get_requirements_list())

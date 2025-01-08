@@ -228,4 +228,68 @@ creating file inside housing : __init__.py file
 
 creating file : setup.py
 
+```
+from setuptools import setup
+from typing import List
 
+#Declarig variables for setup functions
+PROJECT_NAME="housing-predictor"
+VERSION="0.0.1"
+AUTHOR="Pooja Pandey"
+DESCRIPTION="This is a first FSDS Machine Leaning Project"
+PACKAGES=["housing"]
+REQUIREMENT_FILE_NAME="requirements.txt"
+
+
+
+
+def get_requirements_list()->List[str]:
+    """
+    Description: This function is going to return list of requirement mention in 
+    requirements.txt file
+
+    return this function is going to return a list which contain name of libraries
+    mentioned in the requirements.txt file
+    """
+    with open(REQUIREMENT_FILE_NAME) as requirement_file:
+        requirements = [req.strip() for req in requirement_file.readlines() if req.strip() and req.strip() != "-e ."]
+        return requirements
+
+
+
+
+setup(
+name=PROJECT_NAME,
+version=VERSION,
+author=AUTHOR,
+description=DESCRIPTION,
+packages=PACKAGES,
+install_requires=get_requirements_list()
+)
+
+if __name__=="__main__":
+    print(get_requirements_list())
+```
+
+adding more libraries to requirements.txt file:
+```
+numpy
+Flask
+gunicorn
+scikit-learn
+pandas
+-e .
+```
+>note : -e . : if run pip install -r requirements.txt,
+along with all other libraries it will also going to search for all the packages (housing) created in the current directory
+
+
+To check the code running from setup.py file 
+
+```
+python setup.py install
+```
+or 
+```
+pip install -r requirements.txt
+```
