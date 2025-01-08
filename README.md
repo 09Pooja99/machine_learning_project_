@@ -84,3 +84,55 @@ To check remote url
 ```
 git remote -v
 ```
+
+To setup CI/CD pipeline in heroku we need 3 information
+
+1. HEROKU_EMAIL = poojaapaandey9@gmail.com
+2. HEROKU_API_KEY = HRKU-0197c56d-3222-4875-8417-83f9da674fb3
+3. HEROKU_APP_NAME =
+
+Adding gunicorn in requirements.txt 
+
+Creating Dockerfile 
+```
+FROM python:3.7
+COPY . /app
+WORKDIR /app
+RUN pip install -r requirements.txt
+EXPOSE $PORT
+CMD gunicorn --workers=4 --bind 0.0.0.0:$PORT app:app
+```
+
+ Creating .dockerignore file (venv/,  .git, .gitignore)
+
+BUID DOCKER IMAGE
+```
+docker build -t <image_name>:<tagname> .
+```
+
+>Note: Image name for docker must be lowercase, (tagename=latest)
+
+To build docker image 
+```
+latest .
+```
+
+To list docker image
+```
+docker images
+```
+
+To run docker image 
+docker run <port_number> -e <env_number> <image_id>
+```
+docker run -p 5000:5000 -e PORT=5000 <image_id>
+```
+To check running container in docker
+```
+docker ps
+```
+To stop the docker container
+
+```
+docker stop <container_id>
+```
