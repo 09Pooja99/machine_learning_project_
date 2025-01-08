@@ -211,3 +211,21 @@ jobs:
           
 ### ⬆ IMPORTANT PART ⬆ ###
 ```
+
+DEPLOYMENT WITH GITHUB
+from github action build 
+once completed deployment started ,after , open app from heroku
+deployment done: app  on internet
+
+
+
+
+CREATE STRUCTURE FOR ML PROJECT
+
+creating folder : housing
+
+creating file inside housing : __init__.py file
+
+creating file : setup.py
+
+
