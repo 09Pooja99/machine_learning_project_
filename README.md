@@ -293,3 +293,23 @@ or
 ```
 pip install -r requirements.txt
 ```
+CREATE DIRECTORY STRUCTURE OF ML PROJECT
+
+Inside housing package create following package 
+housing 
+       __init__.py
+       exception
+               __init__.py
+       logger
+               __init__.py
+       pipeline
+               __init__.py
+       component
+               __init__.py
+       config
+               __init__.py
+       entity
+               __init__.py
+
+>note : by creating special file  __init__.py file in any directory , it indicate that directory should be treated as package.
+
