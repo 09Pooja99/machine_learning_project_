@@ -295,12 +295,12 @@ pip install -r requirements.txt
 ```
 CREATE DIRECTORY STRUCTURE OF ML PROJECT
 
-Inside housing package create following package 
+Inside housing package create following package(serialwise)
 housing 
        __init__.py
-       exception
+       logger               
                __init__.py
-       logger
+       exception
                __init__.py
        pipeline
                __init__.py
@@ -313,3 +313,100 @@ housing
 
 >note : by creating special file  __init__.py file in any directory , it indicate that directory should be treated as package.
 
+write code for logger __init__.py file
+
+```
+import logging
+from datetime import datetime
+import os
+
+LOG_DIR="housing_logs"
+
+CURRENT_TIME_STAMP=f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
+
+LOG_FILE_NAME=f"log_{CURRENT_TIME_STAMP}.log"
+
+os.makedirs(LOG_DIR,exist_ok=True)
+
+LOG_FILE_PATH =os.path.join(LOG_DIR,LOG_FILE_NAME)
+
+logging.basicConfig (
+filename=LOG_FILE_PATH,
+filemode="w",
+format='[%(asctime)s] %(name)s - %(levelname)s - %(message)s',
+level=logging.INFO
+)
+```
+
+Validating logger code : app.py
+
+```
+from crypt import methods
+from flask import Flask
+**from housing.logger import logging**
+
+app= Flask(__name__)
+
+@app.route("/", methods=['GET','POST']) 
+def index():
+   ** logging.info("We are testing logging module")**
+    return "Machine Learning Project"
+
+if __name__=="__main__":
+    app.run(debug=True)
+```
+write code for Exception __init__.py file
+
+```
+import os
+import sys
+
+class HousingException(Exception):
+    def __init__(self, error_messege: Exception, error_detail: sys):
+        super().__init__(error_messege)
+        self.error_messege = HousingException.get_detailed_error_messege(
+            error_messege=error_messege,
+            error_detail=error_detail,  # Consistent naming
+        )
+
+    @staticmethod
+    def get_detailed_error_messege(error_messege: Exception, error_detail: sys) -> str:
+        _, _, exec_tb = error_detail.exc_info()
+        line_number = exec_tb.tb_lineno  # Get the line number where the exception occurred
+        file_name = exec_tb.tb_frame.f_code.co_filename
+        error_messege = (
+            f"Error occurred in script: [{file_name}] at line number: [{line_number}] "
+            f"error message: [{error_messege}]"
+        )
+        return error_messege
+
+    def __str__(self):
+        return self.error_messege
+
+    def __repr__(self) -> str:
+        return f"{HousingException.__name__}({self.error_messege})"
+
+```
+Testing exception handling : app.py(flask)
+
+```
+from flask import Flask
+import sys
+from housing.logger import logging
+from housing.exception import HousingException
+
+app= Flask(__name__)
+
+@app.route("/", methods=['GET','POST']) 
+def index():
+    try:
+        raise Exception("we are testing custom exception")
+    except Exception as e:
+        raise HousingException(e,sys)
+        logging.info(housing.error_messege)
+        logging.info("We are testing logging module")
+    return "Machine Learning Project"
+
+if __name__== "__main__":
+    app.run(debug=False)
+```
