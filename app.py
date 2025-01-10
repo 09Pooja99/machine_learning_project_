@@ -17,4 +17,4 @@ def index():
     return "Machine Learning Project"
 
 if __name__== "__main__":
-    app.run(debug=False)
+    app.run(debug=True)

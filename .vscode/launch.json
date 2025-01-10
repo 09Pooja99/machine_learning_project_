@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "E:/machine_learning_project_/app.py",  // Explicitly specify the path to app.py
+            "console": "integratedTerminal",
+            "python": "E:/machine_learning_project_/venv/python.exe"
+        }
+    ]
+}
+

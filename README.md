@@ -410,3 +410,5 @@ def index():
 if __name__== "__main__":
     app.run(debug=False)
 ```
+Run Debugging while staying on the app.py page and add the breakpoint at the line number where it was detected in the exception log
+
