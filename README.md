@@ -412,3 +412,57 @@ if __name__== "__main__":
 ```
 Run Debugging while staying on the app.py page and add the breakpoint at the line number where it was detected in the exception log
 
+Create pipeline component: .py files
+1. Data Ingestion 
+2. Data Validation
+3. Data Transformation
+4. Model Trainer
+5. Model Evaluation
+6. Model Pusher
+
+create pipeline.py file in pipeline directory
+
+now, in entity component folder, create config_entity.py file
+
+Create folder : notebook, to keep ipynb file
+create eample.ipynb file inside this 
+
+activate current environment 
+```
+conda activate E:\machine_learning_project_\venv
+```
+Install ipynb
+
+```
+pip install ipykernel
+```
+
+Configuration info must use namedtuple as it cannot be alterable as configurtion should not be altered
+
+write config_entity.py in entity directory
+```
+from collections import namedtuple
+
+
+DataIngestionConfig=namedtuple("DataIngestionConfig",
+["dataset_download_url","tgz_download_dir","raw_data_dir","ingested_train_dir","ingested_test_dir"])
+
+DataValidationConfig =namedtuple("DataValidationConfig",["schema_file_path"])
+
+DataTransformationConfig= namedtuple("DataTransformationConfig",["add_bedroom_per_room",
+                                                                 "transformed_train_dir",
+                                                                 "transformed_test_dir",
+                                                                 "preprocessed_object_file_path"])
+
+ModelTrainerConfig= namedtuple("ModelTrainerConfig", ["trained_model_file_path", "base_ccuracy"])
+
+ModelEvaluationConfig= namedtuple("ModelEvaluationConfig", ["model_evaluation_file_path","time_stamp"])
+
+ModelPusherConfig= namedtuple("ModelPusherConfig", ["export_dir_path"])
+
+```
+
+create  folder in machine_learning_project  named as config, inside it create config.yaml file
+
+
+
