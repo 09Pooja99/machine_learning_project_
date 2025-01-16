@@ -464,5 +464,133 @@ ModelPusherConfig= namedtuple("ModelPusherConfig", ["export_dir_path"])
 
 create  folder in machine_learning_project  named as config, inside it create config.yaml file
 
+```
+training_pipeline_config:
+  pipeline_name: housing
+  artifact_dir: artifact
+
+data_ingestion_config:
+  dataset_download_url: https://raw.githubusercontent.com/ageron/handson-ml/master/datasets/housing/housing.tgz
+  raw_data_dir: raw_data
+  tgz_download_dir: tgz_data
+  ingested_dir: ingested_data
+  ingested_train_dir: train
+  ingested_test_dir: test 
 
 
+
+
+data_validation_config:
+  schema_dir: config
+  schema_file_name: schema.yaml
+  report_file_name: report.json
+  report_page_file_name: report.html
+
+data_transformation_config:
+  add_bedroom_per_room: true
+  transformed_dir: transformed_data
+  transformed_train_dir: train
+  transformed_test_dir: test
+  preprocessing_dir: preprocessed
+  preprocessed_object_file_name: preprocessed.pkl
+  
+model_trainer_config:
+  trained_model_dir: trained_model
+  model_file_name: model.pkl
+  base_accuracy: 0.6
+  model_config_dir: config
+  model_config_file_name: model.yaml
+
+
+model_evaluation_config:
+  model_evaluation_file_name: model_evaluation.yaml
+  
+
+model_pusher_config:
+  model_export_dir: saved_models
+```
+
+
+
+
+
+WRITE in housing\config\configuration.py file to connect config.yaml and config_entity.py file to read info and send configurations to the pipeline 
+
+```
+from housing.entity.config_entity import DataIngestionConfig, DataValidationConfig,DataTransformationConfig, ModelTrainerConfig, ModelEvaluationConfig, ModelPusherConfig, TrainingPipelineConfig
+
+from housing.util.util import read_yaml_file
+
+from housing.constant import *
+
+
+
+class Configuration:
+    def __init__(self)-> None:
+        pass
+
+    def get_data_ingestion_config(self)-> DataIngestionConfig:
+        pass
+
+    def get_data_validation_config(self)-> DataValidationConfig:
+        pass
+
+    def get_data_transformation_config(self)-> DataTransformationConfig:
+        pass
+
+    def get_model_trainer_config(self)-> ModelTrainerConfig:
+        pass
+
+    def get_model_evaluation_config(self)-> ModelEvaluationConfig:
+        pass
+
+    def get_model_pusher_config(self)-> ModelPusherConfig:
+        pass
+
+    def get_training_pipeline_config(self)-> TrainingPipelineConfig:
+        pass
+```
+
+install python supported yaml file 
+```
+pip install PyYAML
+
+```
+
+create a folder util inside housing folder , and create util.py and __ini__.py file inside util 
+
+write code to read yaml file in util.py file
+```
+import yaml
+from housing.exception import HousingException
+import os, sys
+
+
+def read_yaml_file(file_path:str)->dict:
+    """read a yaml file and returns the contents as dictionary.
+    file_path:str
+    """
+    try:
+        with open(file_path, 'rb') as yaml_file:
+            return yaml.safe_load(yaml_file)
+    except Exception as e:
+        raise HousingException(e, sys) from e
+```
+
+create folder inside housing : constant
+and create __init__.py file inside and write code to define a path for yaml file to read and connect it with configuration.py file by calling ROOT_DIR there.
+
+```
+import os
+from datetime import datetime
+
+#to get current working directory
+ROOT_DIR =os.getcwd() 
+CONFIG_DIR= "config"
+CONFIG_FILE_NAME ="config.yaml"
+
+CONFIG_FILE_PATH =os.path.join(ROOT_DIR,CONFIG_DIR,CONFIG_FILE_NAME)
+
+CURRENT_TIME_STAMP =f"{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
+
+```

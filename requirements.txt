@@ -3,5 +3,7 @@ Flask
 gunicorn
 scikit-learn
 pandas
--e .
 ipykernel
+PyYAML
+-e .
+
