@@ -594,3 +594,4 @@ CONFIG_FILE_PATH =os.path.join(ROOT_DIR,CONFIG_DIR,CONFIG_FILE_NAME)
 CURRENT_TIME_STAMP =f"{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
 
 ```
+write codes in configuration.py as input to initiate config.yaml file through util.py file  , write with the help of Fixed constants from constant.py file and config_entity.py file , also write codes in artifact_entity.py file for artifact that are the output of each component.

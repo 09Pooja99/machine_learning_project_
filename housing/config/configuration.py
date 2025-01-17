@@ -2,13 +2,13 @@ from housing.entity.config_entity import (
     DataIngestionConfig, DataValidationConfig, DataTransformationConfig, 
     ModelTrainerConfig, ModelEvaluationConfig, ModelPusherConfig, TrainingPipelineConfig
 )
-
 from housing.util.util import read_yaml_file
 from housing.logger import logging
-
 import sys, os
 from housing.constant import *
 from housing.exception import HousingException
+
+
 
 class Configuration:
     def __init__(self, config_file_path: str = CONFIG_FILE_PATH, current_time_stamp: str = CURRENT_TIME_STAMP) -> None:
@@ -73,7 +73,7 @@ class Configuration:
             artifact_dir = self.training_pipeline_config.artifact_dir
             data_validation_artifact_dir = os.path.join(
                 artifact_dir,
-                DATA_VALIDATION_ARTIFACT_DIR,
+                DATA_VALIDATION_ARTIFACT_DIR, # type: ignore
                 self.time_stamp
             )
 
