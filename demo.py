@@ -6,8 +6,8 @@ from housing.logger import logging
 
 def main():
     try:
-        pipeline=Pipeline()
-        pipeline.run_pipeline()
+       # pipeline=Pipeline()
+       # pipeline.run_pipeline()
     except Exception as e:
         logging.error(f"{e}")
         print (e)
