@@ -600,3 +600,10 @@ write codes in configuration.py as input to initiate config.yaml file through ut
 write code component for each and try to run pipeline example: demo.py by calling data_ingestion component
 -dataIngestion
 -DataValidation : schema required (schema.yaml created)
+
+
+Data Drift:
+Data drift refers to changes in the statistical properties of data over time that can affect the performance of machine learning models. These changes can occur in the input features (covariates), the relationship between input features and target variables, or the target variable itself. Data drift can lead to model degradation if the model is not updated or retrained to reflect the new data distribution.
+
+install Evidently AI Library for detection of data drift.
+
