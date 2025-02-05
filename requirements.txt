@@ -6,5 +6,6 @@ pandas
 ipykernel
 PyYAML
 evidently
+dill
 -e .
 
