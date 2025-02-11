@@ -5,10 +5,9 @@ from housing.entity.artifact_entity import DataIngestionArtifact
 from housing.entity.artifact_entity import DataValidationArtifact
 import os , sys
 import pandas as pd
-from evidently.model_profile import Profile
-from evidently.model_profile.sections import DataDriftProfileSection
-from evidently.dashboard import Dashboard
-from evidently.dashboard.tabs import DataDriftTab
+import numpy as np
+from evidently.report import Report
+from evidently.metric_preset import DataDriftPreset
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 import json
@@ -19,6 +18,7 @@ class DataValidation:
     def __init__(self, data_validation_config: DataValidationConfig,
                  data_ingestion_artifact: DataIngestionArtifact):
         try:
+            logging.info(f"{'='*20} Data Validation log started.{'='*20} \n\n")
             self.data_validation_config =  data_validation_config
             self.data_ingestion_artifact = data_ingestion_artifact
         except Exception as e:
@@ -76,52 +76,77 @@ class DataValidation:
             return validation_status
         except Exception as e:
                 raise HousingException(e, sys) from e
+        
+    
+        
+    
             
     def get_and_save_data_drift_report(self):
         try:
-            profile= Profile(sections=[DataDriftProfileSection()])
+            report = Report(metrics=[DataDriftPreset()])
 
+            # Load train and test data
             train_df, test_df = self.get_train_and_test_df()
+            # ✅ Run the data drift report 
+            report.run(reference_data=train_df, current_data=test_df)          
             
-            profile.calculate(train_df,test_df)
+            #Convert the report to JSON
+            report_dict = report.as_dict()
+
+            def convert_numpy(obj):
+                if isinstance(obj, np.bool_):  # Convert np.bool_ to bool
+                    return bool(obj)
+                if isinstance(obj, np.integer):  # Convert np.int_ to int
+                    return int(obj)
+                if isinstance(obj, np.floating):  # Convert np.float_ to float
+                    return float(obj)
+                return obj  # Return original object if no conversion needed
             
-            profile.json()
-
-            report = json.loads(profile.json())
-
+            # Save the report as a JSON file
             report_file_path = self.data_validation_config.report_file_path
             report_dir = os.path.dirname(report_file_path)
-            os.makedirs(report_dir,exist_ok=True)
+            os.makedirs(report_dir, exist_ok=True)
 
-            with open(report_file_path,"w") as report_files:
-                 json.dump(report, report_files, indent=6)
+            
+            # ✅ Save the JSON report with NumPy conversion
 
-            return report
+            with open(report_file_path, "w", encoding="utf-8") as report_file:
+                 json.dump(report_dict, report_file, indent=6,default=convert_numpy)
+
+
+            return report_dict
         except Exception as e:
             raise HousingException(e, sys) from e
         
     def save_data_drift_report_page(self):
         try:
-            
-            dashboard = Dashboard(tabs=[DataDriftTab()])
+            # ✅ Create the new Evidently report
+            report = Report(metrics=[DataDriftPreset()])
+             # ✅ Load train and test data
             train_df, test_df = self.get_train_and_test_df()
-            dashboard.calculate(train_df,test_df)
-            
+
+        # ✅ Run the data drift report
+            report.run(reference_data=train_df, current_data=test_df)
+
+        # ✅ Define the report file path
             report_page_file_path = self.data_validation_config.report_page_file_path
             report_page_dir = os.path.dirname(report_page_file_path)
-            os.makedirs(report_page_dir,exist_ok=True)
+            os.makedirs(report_page_dir, exist_ok=True)
 
-            dashboard.save(report_page_file_path)
+            # ✅ Save the report as an HTML file
+            report.save_html(report_page_file_path)
+    
+
         except Exception as e:
-                raise HousingException(e, sys) from e
-            
-    def is_data_drift_found(self)-> bool:
+             raise HousingException(e, sys) from e
+        
+    def is_data_drift_found(self)->bool:
         try:
             report = self.get_and_save_data_drift_report()
             self.save_data_drift_report_page()
             return True
         except Exception as e:
-                raise HousingException(e, sys) from e
+            raise HousingException(e,sys) from e
             
     def initiate_data_validation(self)-> DataValidationArtifact:
         try:
@@ -136,9 +161,14 @@ class DataValidation:
                  is_validated=True,
                  message="Data Validation Performed Successfully."
             )
-            logging.info(f"Data Validation Artifact: {data_validation_artifact}")  
+            logging.info(f"Data Validation Artifact: {data_validation_artifact}") 
+            return data_validation_artifact
         except Exception as e:
                 raise HousingException(e, sys) from e
+        
+    def __del__(self):
+        logging.info(f"{'>>'*30}Data Valdaition log completed.{'<<'*30} \n\n")
+        
 
             
         

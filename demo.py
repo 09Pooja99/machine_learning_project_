@@ -1,23 +1,11 @@
 from housing.pipeline.pipeline import Pipeline
-from housing.exception import HousingException
+from housing.config.configuration import Configuration  # Adjust import as needed
 from housing.logger import logging
-from housing.config.configuration import Configuration
 
+logging.info("🚀 Starting the script...")
 
-def main():
-    try:
-       # pipeline=Pipeline()
-       # pipeline.run_pipeline()
-       data_transformation_config =Configuration().get_data_transformation_config()
-       print(data_transformation_config)
-    except Exception as e:
-        logging.error(f"{e}")
-        print (e)
-
-
-
-
-if __name__== "__main__":
-    main()
-
-    
+config = Configuration()  # Load configuration
+pipeline = Pipeline(config=config)  # Pass the config
+print("✅ Running pipeline...")
+pipeline.run_pipeline()
+logging.info("🎯 Pipeline execution completed!")
