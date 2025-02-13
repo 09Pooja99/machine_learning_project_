@@ -33,7 +33,6 @@ jobs:
           export PATH=$PATH:/usr/local/bin
           heroku stack:set container --app ${{ secrets.HEROKU_APP_NAME }}
 
-
       
       # Login to Heroku container registry
       - name: Heroku Container Login
@@ -41,7 +40,6 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
-
 
 
 ### ⬇ IMPORTANT PART ⬇ ###
@@ -85,3 +83,4 @@ jobs:
    
           
 ### ⬆ IMPORTANT PART ⬆ ###
+

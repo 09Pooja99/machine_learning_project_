@@ -3,7 +3,6 @@ Flask
 gunicorn
 scikit-learn
 pandas
-ipykernel
 PyYAML
 evidently
 dill
