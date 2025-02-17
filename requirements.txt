@@ -4,8 +4,8 @@ gunicorn
 scikit-learn
 pandas
 PyYAML
-evidently
 dill
+evidently==0.2.1
 matplotlib
 -e .
 
