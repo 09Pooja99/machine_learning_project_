@@ -1,5 +1,4 @@
 # machine_learning_project_
-This is first machine learning project
 
 Application url:
 [HousingPredictor](https://housing-pred-app-4ac85e42ff68.herokuapp.com/)
